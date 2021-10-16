@@ -29,14 +29,16 @@ else
             kill $( cat $HOME/.config/Internet-Radio/pid )
             echo '' > $HOME/.config/Internet-Radio/pid
         fi
+
+    else
+        LINK=$( grep "$@" $CONFIG | head -1 | cut -d '|' -f1 )
+        coproc player ( nohup mpv --no-video $LINK > /dev/null 2>&1 ) &&
+        echo ${player_PID} > $HOME/pid
+        if [ -f $HOME/.config/Internet-Radio/pid ]
+        then
+            kill $( cat $HOME/.config/Internet-Radio/pid )
+        fi
+        cat $HOME/pid > $HOME/.config/Internet-Radio/pid
+        rm $HOME/pid
     fi
-    LINK=$( grep "$@" $CONFIG | head -1 | cut -d '|' -f1 )
-    coproc player ( nohup mpv --no-video $LINK > /dev/null 2>&1 ) &&
-    echo ${player_PID} > $HOME/pid
-    if [ -f $HOME/.config/Internet-Radio/pid ]
-    then
-        kill $( cat $HOME/.config/Internet-Radio/pid )
-    fi
-    cat $HOME/pid > $HOME/.config/Internet-Radio/pid
-    rm $HOME/pid
 fi

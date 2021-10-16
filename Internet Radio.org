@@ -32,6 +32,8 @@ then
     cat $CONFIG | cut -d '|' -f2
 #+end_src
 
+** If There Is a "stop", Kill Existing Task
+
 #+begin_src bash :tangle "Internet-Radio"
 else
     if [ x"$@" = x"stop" ]
@@ -41,15 +43,21 @@ else
             kill $( cat $HOME/.config/Internet-Radio/pid )
             echo '' > $HOME/.config/Internet-Radio/pid
         fi
+#+end_src
+
+** If There Is a Different Argument, Then Extract Link From The Config File And Run It
+
+#+begin_src bash :tangle "Internet-Radio"
+    else
+        LINK=$( grep "$@" $CONFIG | head -1 | cut -d '|' -f1 )
+        coproc player ( nohup mpv --no-video $LINK > /dev/null 2>&1 ) &&
+        echo ${player_PID} > $HOME/pid
+        if [ -f $HOME/.config/Internet-Radio/pid ]
+        then
+            kill $( cat $HOME/.config/Internet-Radio/pid )
+        fi
+        cat $HOME/pid > $HOME/.config/Internet-Radio/pid
+        rm $HOME/pid
     fi
-    LINK=$( grep "$@" $CONFIG | head -1 | cut -d '|' -f1 )
-    coproc player ( nohup mpv --no-video $LINK > /dev/null 2>&1 ) &&
-    echo ${player_PID} > $HOME/pid
-    if [ -f $HOME/.config/Internet-Radio/pid ]
-    then
-        kill $( cat $HOME/.config/Internet-Radio/pid )
-    fi
-    cat $HOME/pid > $HOME/.config/Internet-Radio/pid
-    rm $HOME/pid
 fi
 #+end_src
