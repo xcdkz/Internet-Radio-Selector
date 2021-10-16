@@ -1,0 +1,55 @@
+* Script
+
+** Main Variables
+#+begin_src bash :tangle "Internet-Radio"
+#!/bin/bash
+
+MAINFOLDER="${HOME}/.config/Internet-Radio"
+CONFIG="${MAINFOLDER}/config"
+#+end_src
+
+** Checking If Config Exists
+#+begin_src bash :tangle "Internet-Radio"
+if [ $# -eq 0 ]
+then
+    if [ ! -d $MAINFOLDER ]
+    then
+        mkdir -p $MAINFOLDER
+        touch ${CONFIG}
+    fi
+    if [ ! -f $CONFIG ]
+    then
+        touch $CONFIG
+    fi
+fi
+#+end_src
+
+** Listing All Available Radios If No Arguments
+#+begin_src bash :tangle "Internet-Radio"
+if [ $# -eq 0 ]
+then
+    echo "stop"
+    cat $CONFIG | cut -d '|' -f2
+#+end_src
+
+#+begin_src bash :tangle "Internet-Radio"
+else
+    if [ x"$@" = x"stop" ]
+    then
+        if [ -f $HOME/.config/Internet-Radio/pid ]
+        then
+            kill $( cat $HOME/.config/Internet-Radio/pid )
+            echo '' > $HOME/.config/Internet-Radio/pid
+        fi
+    fi
+    LINK=$( grep "$@" $CONFIG | head -1 | cut -d '|' -f1 )
+    coproc player ( nohup mpv --no-video $LINK > /dev/null 2>&1 ) &&
+    echo ${player_PID} > $HOME/pid
+    if [ -f $HOME/.config/Internet-Radio/pid ]
+    then
+        kill $( cat $HOME/.config/Internet-Radio/pid )
+    fi
+    cat $HOME/pid > $HOME/.config/Internet-Radio/pid
+    rm $HOME/pid
+fi
+#+end_src

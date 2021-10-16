@@ -1,0 +1,34 @@
+* Overview
+Internet-Radio-Selector is a minimal rofi-based internet radio selector. It's functionality is currently limited to the [[https://ytdl-org.github.io/youtube-dl/supportedsites.html][websites currently supported by youtube-dl]].
+* Usage
+
+While in the project folder:
+#+begin_src bash
+chmod +x Internet-Radio
+#+end_src
+
+Then to actually run the program:
+#+begin_src bash
+rofi -show Internet-Radio -modi "Internet-Radio:Absolute/Path/To/Internet-Radio"
+#+end_src
+
+I highly suggest binding the above command to your keyboard shortcut of choice. After launch you can select your favorite radio from the list or stop playing by selecting "stop" option at the top of the list.
+
+* Configuration
+Change ~/.config/Internet-Radio/config file to configure this script. If it doesn't exist, create it. The general syntax for this file is:
+#+begin_src
+radio-link|radio name
+radio-link|radio name
+radio-link|radio name
+#+end_src
+
+So for example to add popular [[https://www.youtube.com/watch?v=5qap5aO4i9A][lofi hip hop radio]], you have to add this line to the file:
+#+begin_src
+https://www.youtube.com/watch?v=5qap5aO4i9A|lofi hip hop radio
+#+end_src
+
+* Requirements
+Currently only requirements are:
+ - mpv
+ - youtube-dl
+ - rofi
