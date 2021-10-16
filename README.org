@@ -7,7 +7,7 @@ While in the project folder:
 chmod +x Internet-Radio
 #+end_src
 
-Then to actually run the program:
+Then to actually run the script:
 #+begin_src bash
 rofi -show Internet-Radio -modi "Internet-Radio:Absolute/Path/To/Internet-Radio"
 #+end_src
