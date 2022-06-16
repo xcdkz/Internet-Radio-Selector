@@ -30,5 +30,5 @@ https://www.youtube.com/watch?v=5qap5aO4i9A|lofi hip hop radio
 * Requirements
 Currently only requirements are:
  - mpv
- - youtube-dl
+ - youtube-dl/yt-dlp
  - rofi
